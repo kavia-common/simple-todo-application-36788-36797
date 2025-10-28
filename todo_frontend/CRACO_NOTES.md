@@ -1,0 +1,1 @@
+We integrated @craco/craco to customize CRA's webpack: craco.config.js removes WorkboxWebpackPlugin to avoid a source-map-generator build error seen in CI. Scripts now use "craco" for start/build/test.

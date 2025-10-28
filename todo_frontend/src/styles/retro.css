@@ -1,0 +1,153 @@
+/* Retro Theme using style guide accents: primary #3b82f6, success #06b6d4, error #EF4444, secondary #64748b */
+:root {
+  --primary: #3b82f6;
+  --success: #06b6d4;
+  --error: #EF4444;
+  --secondary: #64748b;
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --text: #111827;
+  --pixel: rgba(0,0,0,0.15);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Press Start 2P", "Courier New", Courier, monospace;
+}
+
+.container {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 24px;
+  background: var(--surface);
+  border: 2px solid var(--secondary);
+  box-shadow:
+    0 0 0 2px var(--pixel) inset,
+    8px 8px 0 0 rgba(0,0,0,0.08);
+  border-radius: 8px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 22px;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 #fff, 2px 2px 0 var(--primary);
+}
+
+.accent {
+  color: var(--primary);
+}
+
+.form {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0 24px;
+}
+
+.input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 2px solid var(--secondary);
+  border-radius: 6px;
+  outline: none;
+  background: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  box-shadow: 0 0 0 2px var(--pixel) inset;
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+.btn {
+  padding: 12px 16px;
+  border: 2px solid #0f172a;
+  background: linear-gradient(180deg, var(--primary), #2563eb);
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  box-shadow: 3px 3px 0 0 #0f172a;
+  transition: transform .05s ease-in-out;
+}
+
+.btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #0f172a;
+}
+
+.btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 0 #0f172a;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 2px solid var(--secondary);
+  border-radius: 6px;
+  padding: 10px 12px;
+  box-shadow: 0 0 0 2px var(--pixel) inset;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--success);
+  cursor: pointer;
+}
+
+.text {
+  flex: 1;
+  font-size: 14px;
+}
+
+.text.completed {
+  text-decoration: line-through;
+  color: var(--secondary);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-small {
+  padding: 8px 10px;
+  font-size: 12px;
+  box-shadow: 2px 2px 0 0 #0f172a;
+}
+
+.btn-edit {
+  background: linear-gradient(180deg, var(--success), #0ea5b5);
+}
+
+.btn-delete {
+  background: linear-gradient(180deg, var(--error), #b91c1c);
+}
+
+.edit-input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+  font-family: inherit;
+}
