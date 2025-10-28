@@ -30,7 +30,7 @@ export default function TodoItem({ todo, onToggle, onSave, onDelete }) {
   }
 
   return (
-    <div className="item" role="listitem">
+    <div className="item" role="listitem" aria-label={`Todo item: ${todo.text}`}>
       <input
         className="checkbox"
         type="checkbox"
@@ -50,15 +50,26 @@ export default function TodoItem({ todo, onToggle, onSave, onDelete }) {
               setDraft(todo.text);
             }
           }}
+          aria-label={`Edit text for ${todo.text}`}
           autoFocus
         />
       ) : (
-        <div className={`text ${todo.completed ? 'completed' : ''}`}>{todo.text}</div>
+        <div
+          className={`text ${todo.completed ? 'completed' : ''}`}
+          aria-label={`Todo text${todo.completed ? ', completed' : ''}`}
+        >
+          {todo.text}
+        </div>
       )}
       <div className="actions">
         {editing ? (
           <>
-            <button className="btn btn-small btn-edit" onClick={handleSave} disabled={pending}>
+            <button
+              className="btn btn-small btn-edit"
+              onClick={handleSave}
+              disabled={pending}
+              aria-label={`Save changes to ${todo.text}`}
+            >
               Save
             </button>
             <button
@@ -68,16 +79,25 @@ export default function TodoItem({ todo, onToggle, onSave, onDelete }) {
                 setDraft(todo.text);
               }}
               disabled={pending}
+              aria-label={`Cancel editing ${todo.text}`}
             >
               Cancel
             </button>
           </>
         ) : (
           <>
-            <button className="btn btn-small btn-edit" onClick={() => setEditing(true)}>
+            <button
+              className="btn btn-small btn-edit"
+              onClick={() => setEditing(true)}
+              aria-label={`Edit ${todo.text}`}
+            >
               Edit
             </button>
-            <button className="btn btn-small btn-delete" onClick={() => onDelete(todo.id)}>
+            <button
+              className="btn btn-small btn-delete"
+              onClick={() => onDelete(todo.id)}
+              aria-label={`Delete ${todo.text}`}
+            >
               Delete
             </button>
           </>

@@ -14,7 +14,7 @@
     "start": "concurrently \"node server/index.js\" \"craco start\"",
     "client": "craco start",
     "server": "node server/index.js",
-    "build": "craco build",
+    "build": "cross-env GENERATE_SOURCEMAP=false craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -38,9 +38,9 @@
     "@craco/craco": "^7.1.0",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "source-map": "^0.5.7",
+    "source-map": "^0.6.1",
     "source-map-resolve": "^0.6.0",
-    "workbox-build": "^6.6.0",
-    "workbox-webpack-plugin": "^6.6.0"
+    "workbox-build": "^6.5.4",
+    "workbox-webpack-plugin": "^6.5.4"
   }
 }

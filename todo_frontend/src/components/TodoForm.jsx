@@ -23,7 +23,7 @@ export default function TodoForm({ onAdd }) {
   }
 
   return (
-    <form className="form" onSubmit={handleSubmit} aria-label="Add Todo Form">
+    <form className="form" onSubmit={handleSubmit} aria-label="Add Todo Form" role="form">
       <input
         className="input"
         type="text"
@@ -32,10 +32,12 @@ export default function TodoForm({ onAdd }) {
         onChange={(e) => setText(e.target.value)}
         disabled={pending}
         aria-label="Todo text"
+        aria-describedby="add-help"
       />
-      <button className="btn" type="submit" disabled={pending}>
+      <button className="btn" type="submit" disabled={pending} aria-label="Add todo">
         {pending ? 'Adding…' : 'Add'}
       </button>
+      <span id="add-help" className="visually-hidden">Type a todo and press Add</span>
     </form>
   );
 }

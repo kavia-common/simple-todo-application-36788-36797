@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import './styles/retro.css';
 import TodoForm from './components/TodoForm';
@@ -11,9 +11,30 @@ function App() {
    * Retro-themed Todo App
    * - Single column layout with header, add form, and todo list.
    * - Optimistic updates for add, toggle, edit, and delete.
+   * - Lightweight error banner/toast with aria-live for accessibility.
    */
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
+  const errorTimeoutRef = useRef(null);
+
+  // Non-intrusive error setter with auto-clear
+  function showError(message) {
+    if (!message) return;
+    setErrorMsg(message);
+    if (errorTimeoutRef.current) {
+      clearTimeout(errorTimeoutRef.current);
+    }
+    errorTimeoutRef.current = setTimeout(() => {
+      setErrorMsg('');
+    }, 4000);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (errorTimeoutRef.current) clearTimeout(errorTimeoutRef.current);
+    };
+  }, []);
 
   // Initial load
   useEffect(() => {
@@ -22,9 +43,11 @@ function App() {
       try {
         const data = await fetchTodos();
         if (active) setTodos(data);
-      } catch {
-        // If API is not ready, show empty state without crashing
-        if (active) setTodos([]);
+      } catch (e) {
+        if (active) {
+          setTodos([]);
+          showError(e?.message || 'Failed to load todos');
+        }
       } finally {
         if (active) setLoading(false);
       }
@@ -46,7 +69,8 @@ function App() {
     } catch (e) {
       // rollback
       setTodos((prev) => prev.filter((t) => t.id !== tempId));
-      throw e;
+      showError(e?.message || 'Could not add todo');
+      // keep error non-blocking
     }
   }
 
@@ -56,9 +80,10 @@ function App() {
     setTodos((cur) => cur.map((t) => (t.id === id ? { ...t, completed } : t)));
     try {
       await updateTodo(id, { completed });
-    } catch {
+    } catch (e) {
       // rollback
       setTodos(prev);
+      showError(e?.message || 'Could not update todo');
     }
   }
 
@@ -68,8 +93,9 @@ function App() {
     setTodos((cur) => cur.map((t) => (t.id === id ? { ...t, text } : t)));
     try {
       await updateTodo(id, { text });
-    } catch {
+    } catch (e) {
       setTodos(prev);
+      showError(e?.message || 'Could not save changes');
     }
   }
 
@@ -79,8 +105,9 @@ function App() {
     setTodos((cur) => cur.filter((t) => t.id !== id));
     try {
       await deleteTodo(id);
-    } catch {
+    } catch (e) {
       setTodos(prev);
+      showError(e?.message || 'Could not delete todo');
     }
   }
 
@@ -92,12 +119,31 @@ function App() {
         </h1>
       </div>
 
+      {/* Error banner/toast - polite so it won't interrupt screen readers */}
+      <div
+        className={`toast ${errorMsg ? 'toast-visible' : ''}`}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {errorMsg}
+        {errorMsg && (
+          <button
+            className="toast-close"
+            aria-label="Dismiss error message"
+            onClick={() => setErrorMsg('')}
+          >
+            ×
+          </button>
+        )}
+      </div>
+
       <TodoForm onAdd={handleAdd} />
 
       {loading ? (
-        <p>Loading…</p>
+        <p aria-live="polite">Loading…</p>
       ) : todos.length === 0 ? (
-        <p>No todos yet — add your first one!</p>
+        <p aria-live="polite">No todos yet — add your first one!</p>
       ) : (
         <div className="list" role="list" aria-label="Todo List">
           {todos.map((t) => (
