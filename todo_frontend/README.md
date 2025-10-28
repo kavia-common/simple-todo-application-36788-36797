@@ -9,14 +9,42 @@ This project provides a minimal React template with a clean, modern UI and minim
 - **Fast**: Minimal dependencies for quick loading times
 - **Simple**: Easy to understand and modify
 
+## Runtime Overview
+
+This frontend includes a minimal Express API server and a React client:
+- API server runs on http://localhost:3001
+- React dev server runs on http://localhost:3000
+- package.json keeps CRA's proxy set to `http://localhost:3001` so client requests to `/api/*` are proxied to the API
+
+The API server reads the SQLite database path from a sibling database container's db_connection.txt when present; otherwise it falls back to a local file.
+
+## Startup Sequence
+
+1) Start the database container first (todo_database)
+   - Ensure it writes a db_connection.txt file with a "File path:" line pointing to the SQLite .db file.
+   - Location expected by the frontend API:  
+     simple-todo-application-36788-36798/todo_database/db_connection.txt
+
+2) Start the frontend (this container)
+   - In this directory:
+     - `npm install`
+     - `npm start`
+   - This launches:
+     - Express API at port 3001
+     - React dev server at port 3000 (proxy to 3001 is preserved)
+
+If db_connection.txt is not found or cannot be parsed, the API falls back to: `todo_frontend/data/todos.db` and will create it if needed.
+
 ## Getting Started
 
 In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Runs both the API server and the React app in development mode.
+- React: http://localhost:3000
+- API: http://localhost:3001
+- The CRA proxy in package.json remains set to `http://localhost:3001`.
 
 ### `npm test`
 

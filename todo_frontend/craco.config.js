@@ -34,6 +34,20 @@ module.exports = {
         });
       }
 
+      // FINAL DEFENSE: alias workbox modules to a no-op module so CRA can't load them
+      webpackConfig.resolve = webpackConfig.resolve || {};
+      webpackConfig.resolve.alias = Object.assign({}, webpackConfig.resolve.alias, {
+        'workbox-webpack-plugin': false,
+        'workbox-build': false,
+        'workbox-window': false,
+        'workbox-core': false,
+        'workbox-precaching': false,
+        'workbox-routing': false,
+        'workbox-strategies': false,
+        'workbox-expiration': false,
+        'workbox-cacheable-response': false,
+      });
+
       return webpackConfig;
     },
   },
